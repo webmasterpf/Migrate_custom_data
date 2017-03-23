@@ -1,0 +1,97 @@
+## Migration des fichiers du site PF selon méthode Drupal8
+# https://www.mtech-llc.com/blog/ada-hernandez/how-migrate-images-drupal-8-using-csv-source
+# besoin du module https://www.drupal.org/project/migrate_source_csv
+# migration via un CSV
+id: fichiers_pf_csv
+label: Migration des fichiers du site PF
+migration_group: upgrade_pf
+migration_tags:
+  - CSV
+# Partie 1 : Source.
+source:
+   # Here, we define constants which we would use to generate file paths
+  # and file names for program images.
+  constants:
+    source_base_path: 'http://stagmd6.provence-formation.fr/'
+    uri_file: 'public://sites/d8dev-pf/media'
+  plugin: csv
+  delimiter: ,
+  track_changes: true
+  path: 'public://modules/_custom/d8_files_migration/import/files_provence-formation_stagmd6_CSV.csv'
+  header_row_count: 1
+  # Unique ID.
+  #
+  # The source for images do not have any existing unique IDs. Hence,
+  # we use the image name as unique IDs. This will ensure that every
+  # image results in the creation of a unique file entity on the site.
+  keys:
+   #colonne du fichier CSV contenant les nom des fichiers
+    - fid
+  # Source field definitions.
+  
+  #Description de la source des données - Couple Nom Colonne CSV / Nom explicite
+  column_names:
+    
+    0:
+       fid: 'fid'
+    1:
+       uid: 'uid'
+    2:
+       filename: 'Nom du fichier'
+    3:
+       filepath: 'Chemin du fichier'
+    4:
+       filesize: 'Taille du fichier'
+    5:
+       filemime: 'Type Mime' 
+ 
+  # Since we are writing YAML, we do not have ways to manipulate
+  # fields like we do in PHP. However, we can use migration process
+  # plugins. These plugins can use migration-specific "constants"
+  # to generate file paths and URIs.
+  #
+
+    
+# Partie 2 : Destination.
+destination:
+  # We will be creating entities of type "file" this time.
+  plugin: 'entity:file'
+  
+# Partie 3 : Process
+#Mappage des colonnes avec les champs de la table en BDD: file_managed
+# Mappings.
+process:
+    fid: fid
+    uid: uid
+    filename: filename
+    filesize: filesize
+    filemime: filemime  
+  
+source_full_path:
+    -
+      plugin: concat
+      delimiter: /
+      source:
+        - constants/source_base_path
+        - filepath
+    -
+      plugin: urlencode
+uri_file:
+    -
+      plugin: concat
+      delimiter: /
+      source:
+        - constants/uri_file
+        - filepath
+    -
+      plugin: urlencode
+#filename: filename
+uri:
+    plugin: file_copy
+    source:
+      - '@source_full_path'
+      - '@uri_file'
+
+migration_dependencies:
+  required: {  }
+  optional: {  }   

@@ -1,0 +1,11 @@
+id: upgrade_pf
+label: Upgrade PF
+description: Migration du contenu depuis Drupal 6
+source_type: Drupal 6
+shared_configuration:
+  source:
+    key: default
+dependencies:
+  enforced:
+    module:
+      - d8_files_migration

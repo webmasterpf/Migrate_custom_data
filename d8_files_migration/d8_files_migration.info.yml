@@ -1,0 +1,14 @@
+# Package info
+name: 'D8 files migration'
+description: Module pour migrer les fichiers d'un site en D6 via un CSV
+type: module
+core: 8.x
+version: VERSION
+package: Migration
+
+# Dependencies
+dependencies:
+  - migrate
+  - migrate_source_csv
+  - migrate_plus
+  - migrate_tools

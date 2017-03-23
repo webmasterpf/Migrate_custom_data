@@ -1,0 +1,74 @@
+## Migration des fichiers du site PF selon méthode Drupal8
+# https://evolvingweb.ca/blog/drupal-8-migration-migrating-files-images-part-3
+# besoin du module https://www.drupal.org/project/migrate_source_csv
+# migration via un CSV
+id: migration_fichiers_pf
+label: Migration des fichiers du site PF
+migration_group: upgrade_pf
+migration_tags:
+  - fichiers
+  - medias
+  - image
+# Source.
+source:
+  plugin: csv
+  path: 'public://modules/_custom/files_provence-formation_stagmd6_CSV.csv'
+  header_row_count: 1
+  # Unique ID.
+  #
+  # The source for images do not have any existing unique IDs. Hence,
+  # we use the image name as unique IDs. This will ensure that every
+  # image results in the creation of a unique file entity on the site.
+  keys:
+   #colonne du fichier CSV contenant les nom des fichiers
+    - filepath
+  # Source field definitions.
+  
+  fields:
+    Image file: Fichiers associés à la migration du site PF
+  # Since we are writing YAML, we do not have ways to manipulate
+  # fields like we do in PHP. However, we can use migration process
+  # plugins. These plugins can use migration-specific "constants"
+  # to generate file paths and URIs.
+  #
+  # Here, we define constants which we would use to generate file paths
+  # and file names for program images.
+  constants:
+    file_source_uri: 'http://stagmd6.provence-formation.fr/'
+    file_dest_uri: 'public://'
+# Destination.
+destination:
+  # We will be creating entities of type "file" this time.
+  plugin: 'entity:file'
+# Mappings.
+process:
+  file_source:
+    -
+      plugin: concat
+      delimiter: /
+      source:
+        - constants/file_source_uri
+        - filepath
+    # Make sure we don't have any url-unfriendly characters.
+    -
+      plugin: urlencode
+  file_dest:
+    -
+      plugin: concat
+      delimiter: /
+      source:
+        - constants/file_dest_uri
+        - filepath
+    # Make sure we don't have any url-unfriendly characters.
+    -
+      plugin: urlencode
+  # We use the image file names as is.
+  #
+  # Alternatively, if we wish to name them after some other
+  # column, we can do it here.
+  filename: filename
+  uri:
+    plugin: file_copy
+    source:
+      - '@file_source'
+      - '@file_dest'

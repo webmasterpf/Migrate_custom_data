@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file://dg-file-001/PARTAGE.DG.ADM/Internet_et_Communication/04_Sites/01_Drupal_%20Ressources/16_Upgrade_Version/02_Upgrade.D6-D8/Site_PF/migration_fichier_pf/migration_fichier_pf.info.yml</file>
+            <file>file://dg-file-001/PARTAGE.DG.ADM/Internet_et_Communication/04_Sites/01_Drupal_%20Ressources/16_Upgrade_Version/02_Upgrade.D6-D8/Site_PF/migration_fichier_pf/migration_fichier_pf.install</file>
+        </group>
+        <group name="Migrate D6 &gt; D8">
+            <file>file://dg-file-001/PARTAGE.DG.ADM/Internet_et_Communication/04_Sites/01_Drupal_%20Ressources/16_Upgrade_Version/02_Upgrade.D6-D8/Site_PF/d8_files_migration/d8_files_migration.install</file>
+            <file>file://dg-file-001/PARTAGE.DG.ADM/Internet_et_Communication/04_Sites/01_Drupal_%20Ressources/16_Upgrade_Version/02_Upgrade.D6-D8/Site_PF/d8_files_migration/config/install/migrate_plus.migration.fichiers_csv.yml</file>
+            <file>file://dg-file-001/PARTAGE.DG.ADM/Internet_et_Communication/04_Sites/01_Drupal_%20Ressources/16_Upgrade_Version/02_Upgrade.D6-D8/Site_PF/d8_files_migration/d8_files_migration.info.yml</file>
+        </group>
+    </open-files>
+</project-private>

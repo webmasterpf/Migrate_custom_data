@@ -1,0 +1,14 @@
+# Package info
+name: 'Migration fichier PF'
+description: Migration personnalisé des fichiers du site sous D6
+type: module
+core: 8.x
+package: Custom
+
+# Dependencies
+dependencies:
+  - migrate
+  - migrate_source_csv
+  - migrate_plus
+  - migrate_tools
+  - node
