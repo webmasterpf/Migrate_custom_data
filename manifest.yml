@@ -1,7 +1,9 @@
+- d6_date_formats
+- d6_menu
 # file migrations are configurable, see https://www.drupal.org/node/2257723 
 - d6_file: 
     source: 
-      conf_path: sites/assets 
+      conf_path: http://d6pf-pfdev.provence-formation.fr/sites/all/media
     destination: 
-      source_base_path: destination/base/path 
+      source_base_path: http://d8pf-pfdev.provence-formation.fr
       destination_path_property: uri 
