@@ -1,0 +1,7 @@
+# file migrations are configurable, see https://www.drupal.org/node/2257723 
+- d6_file: 
+    source: 
+      conf_path: sites/assets 
+    destination: 
+      source_base_path: destination/base/path 
+      destination_path_property: uri 

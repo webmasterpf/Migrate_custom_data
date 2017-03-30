@@ -8,8 +8,9 @@
         </group>
         <group name="Migrate D6 &gt; D8">
             <file>file://dg-file-001/PARTAGE.DG.ADM/Internet_et_Communication/04_Sites/01_Drupal_%20Ressources/16_Upgrade_Version/02_Upgrade.D6-D8/Site_PF/d8_files_migration/d8_files_migration.install</file>
-            <file>file://dg-file-001/PARTAGE.DG.ADM/Internet_et_Communication/04_Sites/01_Drupal_%20Ressources/16_Upgrade_Version/02_Upgrade.D6-D8/Site_PF/d8_files_migration/config/install/migrate_plus.migration.fichiers_csv.yml</file>
             <file>file://dg-file-001/PARTAGE.DG.ADM/Internet_et_Communication/04_Sites/01_Drupal_%20Ressources/16_Upgrade_Version/02_Upgrade.D6-D8/Site_PF/d8_files_migration/d8_files_migration.info.yml</file>
+            <file>file://dg-file-001/PARTAGE.DG.ADM/Internet_et_Communication/04_Sites/01_Drupal_%20Ressources/16_Upgrade_Version/02_Upgrade.D6-D8/Site_PF/d8_files_migration/config/install/migrate_plus.migration.fichiers_pf_csv.yml</file>
+            <file>file://dg-file-001/PARTAGE.DG.ADM/Internet_et_Communication/04_Sites/01_Drupal_%20Ressources/16_Upgrade_Version/02_Upgrade.D6-D8/Site_PF/migrate_example_advanced/migrate_example_advanced_setup/config/install/field.storage.node.field_migrate_example_adv_image.yml</file>
         </group>
     </open-files>
 </project-private>

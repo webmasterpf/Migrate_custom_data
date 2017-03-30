@@ -13,7 +13,7 @@
 function migration_fichier_pf_install() {
 
   // Prepare destination directory.
-  $dest_directory = 'public://import/program';
+  $dest_directory = 'public://import/';
   file_prepare_directory($dest_directory, FILE_CREATE_DIRECTORY);
 
   // Copy files to destination directory.
@@ -29,7 +29,7 @@ function migration_fichier_pf_install() {
  * Deletes migration source files created during installation.
  */
 function migration_fichier_pf_uninstall() {
-  $dest_directory = 'public://import/program';
+  $dest_directory = 'public://import/';
   file_unmanaged_delete_recursive($dest_directory);
 }
 
@@ -40,7 +40,7 @@ function migration_fichier_pf_uninstall() {
  *   Import source files.
  */
 function _migration_fichier_pf_source_files() {
-  $dirname = drupal_get_path('module', 'migration_fichier_pf') . '/import/program';
+  $dirname = drupal_get_path('module', 'migration_fichier_pf') . '/import/';
   return file_scan_directory($dirname, '/.*/', [
     'recurse' => FALSE,
     'key' => 'filename',

@@ -1,18 +1,16 @@
-## Migration des fichiers du site PF selon mÃ©thode Drupal8
-# https://evolvingweb.ca/blog/drupal-8-migration-migrating-files-images-part-3
-# besoin du module https://www.drupal.org/project/migrate_source_csv
-# migration via un CSV
-id: fichiers_csv
-label: Migration des fichiers du site PF
-migration_group: migration_fichier_pf
+# Migration file for creating "image" for academic programs.
+#
+# Detailed explanations for various elements of a migration
+# YAML have been provided in migrate_plus.migration.program_data.yml
+
+id: migration_fichier_pf
+label: Image associated to academic programs.
+migration_group: migration_fichier
 migration_tags:
-  - CSV
   - file
-  - image
 # Source.
 source:
   plugin: csv
-  delimiter: ;
   path: 'public://modules/custom/migration_fichier_pf/import/program/files_provence-formation_stagmd6_CSV.csv'
   header_row_count: 1
   # Unique ID.
@@ -21,32 +19,10 @@ source:
   # we use the image name as unique IDs. This will ensure that every
   # image results in the creation of a unique file entity on the site.
   keys:
-   #colonne du fichier CSV contenant les nom des fichiers
-    - fid
-    - uid
     - filename
-    - filemime
-    - filesize
-    - status
-    - timestamp
-    - origname
   # Source field definitions.
-  #Mappage des colonnes avec les champs de la table en BDD: file_managed
-  #Couple NomChamp dans Table / Nom Colonne CSV
-  column_names:
-
-    0:
-       fid: 'fid'
-    1:
-       uid: 'uid'
-    2:
-       filename: 'Nom du fichier'
-    3:
-       filepath: 'Chemin du fichier'
-    4:
-       filesize: 'Taille du fichier'
-    5:
-       filemime: 'Type Mime'
+  fields:
+    filename: Name of the filename associated with the program.
 
   # Since we are writing YAML, we do not have ways to manipulate
   # fields like we do in PHP. However, we can use migration process
@@ -56,52 +32,46 @@ source:
   # Here, we define constants which we would use to generate file paths
   # and file names for program images.
   constants:
-    file_source_uri: 'http://stagmd6.provence-formation.fr/sites/all/media'
-    file_dest_uri: 'public://sites/all/media'
-    filepath: skip_on_empty
+    file_source_uri: public://import/program
+    file_dest_uri: 'public://files'
 # Destination.
 destination:
   # We will be creating entities of type "file" this time.
   plugin: 'entity:file'
 # Mappings.
 process:
-    fid: fid
-    uid: uid
-    filename: filename
-    filesize: filesize
-    filemime: filemime
-    filepath: filepath
-
-file_source:
+  file_source:
     -
       plugin: concat
       delimiter: /
       source:
-        - constants/file_source_uri
-        - constants/filepath
-
-
+        - constants/files
+        - filename
     # Make sure we don't have any url-unfriendly characters.
     -
       plugin: urlencode
-
-file_dest:
+  file_dest:
     -
       plugin: concat
       delimiter: /
       source:
         - constants/file_dest_uri
-        - constants/filepath
+        - filename
     # Make sure we don't have any url-unfriendly characters.
     -
       plugin: urlencode
-  # We use the image file names as is.
+  # We use the filename names as is.
   #
   # Alternatively, if we wish to name them after some other
   # column, we can do it here.
-filename: filename
-uri:
-     plugin: file_copy
-     source:
-        - '@file_source'
-        - '@file_dest'
+  filename: filename
+  uri:
+    plugin: file_copy
+    source:
+      - '@file_source'
+      - '@file_dest'
+# Dependencies.
+#dependencies:
+#  enforced:
+#    module:
+#      - c11n_migrate
