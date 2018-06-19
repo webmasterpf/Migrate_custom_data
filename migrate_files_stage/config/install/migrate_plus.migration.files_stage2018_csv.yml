@@ -1,0 +1,113 @@
+## Migration des fichiers du site PF selon mÃ©thode Drupal8
+# https://evolvingweb.ca/blog/drupal-8-migration-migrating-files-images-part-3
+# besoin du module https://www.drupal.org/project/migrate_source_csv
+# migration via un CSV
+id: files_stage2018_csv
+label: Migration des fichiers du site PF
+migration_group: migrate_files_csv2018
+
+#Il ne faut pas modifier les tags sinon le module ne reconnaît plus les plugins utilisés
+migration_tags:
+  - CSV
+  - file
+  - image
+  
+# Source.
+source:
+    
+  plugin: csv
+  
+  # caractère qui délimite les colonnes dans le fichier csv
+  delimiter: ;
+  
+  #chemin d'accès au fichier csv source
+  path: '/var/www/pfdev_stage/drupal-8stage/modules/custom/migrate_files_stage/import/program/files_pf_stagd6_2018CSV.csv'
+  
+  #nombre de ligne dans le fichier source en début de fichier qui ne sont pas des données
+  header_row_count: 1
+
+  #clé permettant d'identifier de manière unique chaque fichier. (Regarder dans le csv pour voir quelle colonne permet cela.
+  keys:
+    - fid
+ 
+  #Mappage des colonnes: chaque champ correspond à une colonne de CSV. La valeur attribuée au champ correspond à une description
+  # qui sera visible par l'utilisateur.
+  column_names:
+
+    0:
+       fid: 'fid'
+    1:
+       uid: 'uid'
+    2:
+       filename: 'Nom du fichier'
+    3:
+       filepath: 'Chemin du fichier'
+    4:
+       filemime: 'Type Mime'
+    5:
+       filesize: 'Taille du fichier'
+       
+  #on définit ici des constantes qui seront utilisées pour générer les chemins vers les fichiers sources 
+  # ainsi que les chemins de destination.
+  constants:
+      
+    #début du chemin où l'on va chercher les fichiers
+    file_source_uri: 'http://staged6-pf.vmdev/sites/all/media'
+    
+    #début du chemin de destination (public:// nous place déjà dans files)
+    file_dest_uri: 'public://'
+    
+# Destination.
+destination:
+  #on crée des entités de type "file" pour la destination
+  plugin: 'entity:file'
+  
+# on fait correspondre les colonnes
+process:
+    fid: fid
+    uid: uid
+    filename: filename
+    filesize: filesize
+    filemime: filemime
+    filepath: filepath
+    
+    # pour obtenir le chemin complet vers les fichiers, on concatène file_source_uri des constantes
+    # avec le filepath qui correspond au chemin vers le fichier présent dans le csv
+    # le delimter "/" permet de relier les deux chaînes à concaténer
+    file_source:
+    -
+      plugin: concat
+      delimiter: /
+      source:
+        - constants/file_source_uri
+        - filepath
+
+
+    # S'assure que les caractères des url ne posent pas de problèmes
+    -
+      plugin: urlencode
+
+    # pour obtenir le chemin complet vers l'emplacement de destination, on concatène file_dest_uri des constantes
+    # avec le filepath qui correspond au chemin vers le fichier présent dans le csv
+    # ici on ne met pas de delimiter car si on en mets un on aura trois "/" après public.
+    file_dest:
+    -
+      plugin: concat
+      
+      source:
+        - constants/file_dest_uri
+        - filepath
+    # S'assure que les caractères des url ne posent pas de problèmes
+    -
+      plugin: urlencode
+  # We use the image file names as is.
+  #
+  # Alternatively, if we wish to name them after some other
+  # column, we can do it here.
+    filename: filename
+    uri:
+     plugin: file_copy
+     source:
+        - '@file_source'
+        - '@file_dest'
+

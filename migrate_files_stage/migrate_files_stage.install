@@ -10,14 +10,14 @@
  *
  * Copies migration source files to the public:// directory.
  */
-function migration_fichier_pf_install() {
+function migrate_files_stage_install() {
 
   // Prepare destination directory.
-  $dest_directory = 'public://import/';
+  $dest_directory = 'public://import/program';
   file_prepare_directory($dest_directory, FILE_CREATE_DIRECTORY);
 
   // Copy files to destination directory.
-  foreach(_migration_fichier_pf_source_files() as $filename => $file) {
+  foreach(_migrate_files_stage_source_files() as $filename => $file) {
     file_unmanaged_copy($file->uri, $dest_directory . '/' . $file->filename, FILE_EXISTS_REPLACE);
   }
 
@@ -28,8 +28,8 @@ function migration_fichier_pf_install() {
  *
  * Deletes migration source files created during installation.
  */
-function migration_fichier_pf_uninstall() {
-  $dest_directory = 'public://import/';
+function migrate_files_stage_uninstall() {
+  $dest_directory = 'public://import/program';
   file_unmanaged_delete_recursive($dest_directory);
 }
 
@@ -39,10 +39,10 @@ function migration_fichier_pf_uninstall() {
  * @return array
  *   Import source files.
  */
-function _migration_fichier_pf_source_files() {
-  $dirname = drupal_get_path('module', 'migration_fichier_pf') . '/import/';
+function _migrate_files_stage_source_files() {
+  $dirname = drupal_get_path('module', 'migrate_files_stage') . '/import/program';
   return file_scan_directory($dirname, '/.*/', [
     'recurse' => FALSE,
-    'key' => 'fid',
+    'key' => 'filename',
   ]);
 }
